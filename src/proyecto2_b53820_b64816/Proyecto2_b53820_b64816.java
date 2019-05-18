@@ -5,6 +5,7 @@
  */
 package proyecto2_b53820_b64816;
 
+import GUI.Principal;
 import GUI.Window;
 
 /**
@@ -17,9 +18,8 @@ public class Proyecto2_b53820_b64816 {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-      Window w = new Window();
-      w.setVisible(true);
-      w.setLocationRelativeTo(null);
+        Principal principal= new Principal();
+        principal.setVisible(true);
     }
     
 }
