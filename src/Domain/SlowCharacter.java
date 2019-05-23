@@ -29,47 +29,63 @@ public class SlowCharacter extends Character {
             try {
                 switch (bandera) {
                     case 1:
-                        for (int i = 165; i < 620; i = i + 15) {
+                        for (int i = 200; i < 385; i = i + 15) {
                             for (int j = 0; j < 3; j++) {
+
                                 super.setImage(sprite.get(j));
                                 Thread.sleep(this.getSpeed());
-                                super.setX(i);
+                                super.setY(i);
                                 System.out.println(i);
+                                System.out.println("XX" + super.getX());
                             }
                         }
                         bandera = 2;
                         break;
                     case 2:
-                        for (int i = 180; i < 380; i = i + 15) {
+                        for (int i = 750; i > 140; i = i - 15) {
                             for (int j = 3; j < 6; j++) {
                                 super.setImage(sprite.get(j));
                                 Thread.sleep(100);
-                                super.setY(i);
+                                super.setX(i);
                                 bandera = 3;
                                 System.out.println(i);
 
                             }
                         }
                         break;
+
                     case 3:
-                        for (int i = 620; i > 130; i = i - 15) {
-                            for (int j = 3; j < 6; j++) {
+                        for (int i = 385; i >= 90; i = i - 15) {
+                            for (int j = 0; j < 3; j++) {
                                 super.setImage(sprite.get(j));
                                 Thread.sleep(100);
-                                super.setX(i);
+                                super.setY(i);
                                 bandera = 4;
                                 System.out.println(i);
 
                             }
                         }
                         break;
+
                     case 4:
-                        for (int i = 380; i >= 165; i = i - 15) {
+                        for (int i = 140; i < 750; i = i + 15) {
                             for (int j = 0; j < 3; j++) {
                                 super.setImage(sprite.get(j));
                                 Thread.sleep(100);
+                                super.setX(i);
+                                bandera = 5;
+                                System.out.println(i);
+
+                            }
+                        }
+                        break;
+                    case 5:
+                        for (int i = 90; i < 220; i = i + 15) {
+                            for (int j = 3; j < 6; j++) {
+                                super.setImage(sprite.get(j));
+                                Thread.sleep(100);
                                 super.setY(i);
-                         bandera =1;
+                                bandera = -1;
                                 System.out.println(i);
 
                             }
@@ -79,8 +95,7 @@ public class SlowCharacter extends Character {
                     default:
                         break;
                 }
-                
-                
+
             } catch (InterruptedException ex) {
             }
         }//while
