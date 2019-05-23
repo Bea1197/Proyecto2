@@ -14,7 +14,7 @@ public class FastCharacter extends Character {
 
     public void setSprite() throws FileNotFoundException {
         ArrayList<Image> sprite = super.getSprite();
-        for (int i = 0; i < 3; i++) {
+        for (int i = 0; i < 6; i++) {
             sprite.add(new Image(new FileInputStream("src/Assets/Ryu" + i + ".gif")));
         }
         super.setSprite(sprite);
@@ -22,21 +22,94 @@ public class FastCharacter extends Character {
 
     @Override
     public void run() {
-        ArrayList<Image> sprite = super.getSprite();
+     ArrayList<Image> sprite = super.getSprite();
         int x = 0;
-
+        int bandera = 1;
         while (true) {
             try {
-                if (x < 800) {
-                    for (int i = 0; i < 800; i = i + 15) {
-                        for (int j = 0; j < 3; j++) {
-                            super.setImage(sprite.get(j));
-                            Thread.sleep(this.getSpeed());
-                            super.setX(i);
+                switch (bandera) {
+                    case 1:
+                        for (int i = 200; i < 450; i = i + 15) {
+                            for (int j = 0; j < 3; j++) {
+
+                                super.setImage(sprite.get(j));
+                                Thread.sleep(this.getSpeed());
+                                super.setY(i);
+                                System.out.println(i);
+                                System.out.println("XX" + super.getX());
+                            }
                         }
-                    }
-                    break;
+                        bandera = 2;
+                        break;
+                        
+                                            case 2:
+                            for (int i = 300; i < 450; i = i + 15) {
+                            for (int j = 0; j < 3; j++) {
+
+                                super.setImage(sprite.get(j));
+                                Thread.sleep(this.getSpeed());
+                                super.setY(i);
+                                System.out.println(i-10);
+                                System.out.println("XX" + super.getX());
+                            }
+                        }
+                        break;
+
+                    case 33:
+                        for (int i = 750; i > 80; i = i - 15) {
+                            for (int j = 3; j < 6; j++) {
+                                super.setImage(sprite.get(j));
+                                Thread.sleep(100);
+                                super.setX(i);
+                                bandera = 3;
+                                System.out.println(i);
+
+                            }
+                        }
+                        break;
+
+                    case 3:
+                        for (int i = 385; i >= 40; i = i - 15) {
+                            for (int j = 0; j < 3; j++) {
+                                super.setImage(sprite.get(j));
+                                Thread.sleep(100);
+                                super.setY(i);
+                                bandera = 4;
+                                System.out.println(i);
+
+                            }
+                        }
+                        break;
+
+                    case 4:
+                        for (int i = 140; i < 830; i = i + 15) {
+                            for (int j = 0; j < 3; j++) {
+                                super.setImage(sprite.get(j));
+                                Thread.sleep(100);
+                                super.setX(i);
+                                bandera = 5;
+                                System.out.println(i);
+
+                            }
+                        }
+                        break;
+                    case 5:
+                        for (int i = 30; i < 220; i = i + 15) {
+                            for (int j = 3; j < 6; j++) {
+                                super.setImage(sprite.get(j));
+                                Thread.sleep(100);
+                                super.setY(i);
+                                bandera = -1;
+                                System.out.println(i);
+
+                            }
+                        }
+                        break;
+
+                    default:
+                        break;
                 }
+
             } catch (InterruptedException ex) {
             }
         }//while

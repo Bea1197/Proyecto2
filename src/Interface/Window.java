@@ -31,9 +31,9 @@ public class Window extends Application implements Runnable {
     private Canvas canvas;
     private Image image;
 
-    private FastCharacter rr;
-    private SlowCharacter rb;
-    private MediumCharacter rm;
+    private FastCharacter fast;
+    private SlowCharacter slow;
+    private MediumCharacter med;
     private XMLCharacterManager data;
 
     private Domain.Character r1;
@@ -85,15 +85,16 @@ public class Window extends Application implements Runnable {
 
             primaryStage.setScene(this.scene);
 
-            r1 = new Domain.Character("thread 1", -50, 500, 0, Utility.Variables.SlOW);
-            r2 = new Domain.Character("thread 2", -50, 100, 0, Utility.Variables.QUICK);
-            r3 = new Domain.Character("thread 3", -50, 200, 0, Utility.Variables.MEDIUM);
-            r4 = new Domain.Character("thread 4", -50, 300, 0, Utility.Variables.RANDOM);
-
+           
             
-            this.rb = new SlowCharacter("thread 3", -50, 165, 500, Utility.Variables.MEDIUM);
-            this.rb.start();
-
+            this.slow = new SlowCharacter("thread 1", 750, 200, 0, Utility.Variables.SlOW);
+            this.slow.start();
+            
+            this.med= new MediumCharacter("thread 2", 800, 200, 0, Utility.Variables.MEDIUM);
+            this.med.start();
+            
+            this.fast= new FastCharacter("thread 3", 850, 200, 0, Utility.Variables.QUICK);
+            this.fast.start();
             this.thread = new Thread(this);
             this.thread.start();
         } catch (FileNotFoundException | BufferOverflowException ex) {
@@ -103,10 +104,9 @@ public class Window extends Application implements Runnable {
     private void draw(GraphicsContext gc) {
         gc.clearRect(0, 0, Variables.WIDTH, Variables.HEIGHT);
         gc.drawImage(this.image, 0, 0);
-//        gc.drawImage(this.rk.getImage(), this.rk.getX(), this.rk.getY());
-//        gc.drawImage(this.rr.getImage(), this.rr.getX(), this.rr.getY());
-        gc.drawImage(this.rb.getImage(), this.rb.getX(), this.rb.getY());
-//        gc.drawImage(this.rm.getImage(), this.rm.getX(), this.rm.getY());
+        gc.drawImage(this.slow.getImage(), this.slow.getX(), this.slow.getY());
+        gc.drawImage(this.med.getImage(), this.med.getX(), this.med.getY());
+        gc.drawImage(this.fast.getImage(), this.fast.getX(), this.fast.getY());
     }
 
     EventHandler<WindowEvent> exit = new EventHandler<WindowEvent>() {
