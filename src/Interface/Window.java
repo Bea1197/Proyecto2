@@ -1,9 +1,9 @@
 package Interface;
 
 import Data.XMLCharacterManager;
-import Domain.SlowCharacter;
-import Domain.MediumCharacter;
-import Domain.FastCharacter;
+import Domain.FirstLane;
+import Domain.SecondaLane;
+import Domain.ThirdLane;
 import Utility.Variables;
 import com.sun.xml.internal.fastinfoset.util.CharArray;
 import java.io.FileInputStream;
@@ -30,7 +30,7 @@ import javafx.stage.WindowEvent;
 import javax.swing.JOptionPane;
 import org.jdom.JDOMException;
 
-public class Window extends Application implements Runnable ,EventHandler<ActionEvent> {
+public class Window extends Application implements Runnable, EventHandler<ActionEvent> {
 //RYU es el más veloz, luego bill, megaman es el más lento y kirby es random
 
     private Thread thread;
@@ -39,9 +39,9 @@ public class Window extends Application implements Runnable ,EventHandler<Action
     private Canvas canvas;
     private Image image;
 
-    private FastCharacter fast;
-    private SlowCharacter slow;
-    private MediumCharacter med;
+    private ThirdLane fast;
+    private FirstLane slow;
+    private SecondaLane med;
     private XMLCharacterManager data;
 
     private Domain.Character r1;
@@ -49,22 +49,21 @@ public class Window extends Application implements Runnable ,EventHandler<Action
     private Domain.Character r3;
     private Domain.Character r4;
 
-    private Button buttonCreate ;
-    private Button buttonBarrier ;
+    private Button buttonCreate;
+    private Button buttonBarrier;
     private Button buttonRevert;
-    private Button buttonSimulation; 
+    private Button buttonSimulation;
     private Button buttonInterrupt;
-    
+
     private TextField testValue;
     private TextField textCarries;
-    
+
     private Label labelValue;
     private Label labelCarriles;
-     
-     private ComboBox SpeedComboBox ;
 
-   
-    boolean stopThreads;
+    private ComboBox SpeedComboBox;
+
+    boolean stopThreads=false;
     private ArrayList<Image> imagesSprite;
 
     @Override
@@ -138,11 +137,11 @@ public class Window extends Application implements Runnable ,EventHandler<Action
             this.labelValue.relocate(1040, 20);
 
             this.buttonCreate.setPrefSize(110, 30);
-            this. buttonBarrier.setPrefSize(110, 30);
+            this.buttonBarrier.setPrefSize(110, 30);
             this.buttonRevert.setPrefSize(110, 30);
             this.buttonInterrupt.setPrefSize(110, 30);
             this.buttonSimulation.setPrefSize(115, 50);
-            
+
             this.buttonCreate.setOnAction(this);
             this.buttonBarrier.setOnAction(this);
             this.buttonInterrupt.setOnAction(this);
@@ -168,28 +167,16 @@ public class Window extends Application implements Runnable ,EventHandler<Action
 //            this.pane.getChildren().add(textCarries);
             primaryStage.setScene(this.scene);
 
-            this.slow = new SlowCharacter("thread 1", 750, 200, 0, Utility.Variables.SlOW);
+            this.slow = new FirstLane("thread 1", 750, 200, 0, Utility.Variables.SlOW);
 
-            this.slow.setWall(true);
+            this.slow.setWall(false);
 
-            this.med = new MediumCharacter("thread 2", 800, 200, 0, Utility.Variables.MEDIUM);
+            this.med = new SecondaLane("thread 2", 800, 200, 0, Utility.Variables.MEDIUM);
             this.med.setWall(true);
 
-            this.fast = new FastCharacter("thread 3", 850, 200, 0, Utility.Variables.QUICK);
+            this.fast = new ThirdLane("thread 3", 850, 200, 0, Utility.Variables.QUICK);
 
             this.fast.setWall(true);
-
-            if (stopThreads != true) {
-                this.slow.start();
-                this.med.start();
-                this.fast.start();
-                AudioClip clip = new AudioClip(this.getClass().getResource("vuvuzela.mp3").toString());
-                clip.play();
-            } else {
-                this.slow.suspend();
-                this.med.suspend();
-                this.fast.suspend();
-            }
 
             this.thread = new Thread(this);
             this.thread.start();
@@ -207,10 +194,11 @@ public class Window extends Application implements Runnable ,EventHandler<Action
             gc.fillRect(140, 405, 35, 35);
         }
         if (slow.isWall()) {
-            gc.fillRect(100, 405, 35, 35);
+            gc.fillRect(180, 405, 35, 35);
         }
         if (fast.isWall()) {
-            gc.fillRect(180, 405, 35, 35);
+            gc.fillRect(100, 405, 35, 35);
+
         }
 
     }
@@ -229,22 +217,45 @@ public class Window extends Application implements Runnable ,EventHandler<Action
 
     @Override
     public void handle(ActionEvent e) {
-        if ((Button)e.getSource()==buttonCreate) {
-            System.out.println("Boton");
-        }
-     
-        if ((Button)e.getSource()==buttonBarrier) {
+        if ((Button) e.getSource() == buttonCreate) {
+ stopThreads=true;
+            System.out.println(stopThreads);
+              if (stopThreads == true) {
+                this.slow.resume();
+                this.med.resume();
+                this.fast.resume();
+            }
             
         }
-        if ((Button)e.getSource()==buttonInterrupt) {
-            
+
+        if ((Button) e.getSource() == buttonBarrier) {
+
         }
-        if ((Button)e.getSource()==buttonRevert) {
-            
+        if ((Button) e.getSource() == buttonInterrupt) {
+            stopThreads = false;
+            if (stopThreads != true) {
+                this.slow.suspend();
+                this.med.suspend();
+                this.fast.suspend();
+            }
+           
         }
-         if ((Button)e.getSource()==buttonSimulation) {
-            
+        if ((Button) e.getSource() == buttonRevert) {
+
         }
+        if ((Button) e.getSource() == buttonSimulation) {
+            stopThreads = true;
+            System.out.println(stopThreads);
+            if (stopThreads == true) {
+                this.slow.start();
+                this.med.start();
+                this.fast.start();
+                AudioClip clip = new AudioClip(this.getClass().getResource("vuvuzela.mp3").toString());
+                clip.play();
+            }
+
+        }
+
     }
-    
+
 }//End aclss
