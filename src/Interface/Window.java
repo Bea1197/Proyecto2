@@ -1,7 +1,9 @@
 package Interface;
 
 import Data.XMLCharacterManager;
+import Domain.FifthLane;
 import Domain.FirstLane;
+import Domain.FourthLane;
 import Domain.SecondaLane;
 import Domain.ThirdLane;
 import Utility.Variables;
@@ -38,10 +40,13 @@ public class Window extends Application implements Runnable, EventHandler<Action
     private Pane pane;
     private Canvas canvas;
     private Image image;
+    private Image barrierImage;
 
-    private ThirdLane fast;
-    private FirstLane slow;
-    private SecondaLane med;
+    private ThirdLane third;
+    private FirstLane first;
+    private SecondaLane second;
+    private FourthLane fourth;
+    private FifthLane fifth;
     private XMLCharacterManager data;
 
     private Domain.Character r1;
@@ -54,6 +59,7 @@ public class Window extends Application implements Runnable, EventHandler<Action
     private Button buttonRevert;
     private Button buttonSimulation;
     private Button buttonInterrupt;
+    private Button buttonRestart;
 
     private TextField testValue;
     private TextField textCarries;
@@ -63,7 +69,7 @@ public class Window extends Application implements Runnable, EventHandler<Action
 
     private ComboBox SpeedComboBox;
 
-    boolean stopThreads=false;
+    boolean stopThreads = false;
     private ArrayList<Image> imagesSprite;
 
     @Override
@@ -105,6 +111,8 @@ public class Window extends Application implements Runnable, EventHandler<Action
             this.scene = new Scene(this.pane, Variables.WIDTH, Variables.HEIGHT);
             this.canvas = new Canvas(Variables.WIDTH, Variables.HEIGHT);
             this.image = new Image(new FileInputStream("src/Assets/pistaa.jpg"));
+            this.barrierImage = new Image(new FileInputStream("src/Assets/valla2.png"));
+
             this.pane.getChildren().add(this.canvas);
 
             this.testValue = new TextField();
@@ -118,6 +126,7 @@ public class Window extends Application implements Runnable, EventHandler<Action
             this.buttonRevert = new Button("Revert");
             this.buttonSimulation = new Button("Simulation");
             this.buttonInterrupt = new Button("Interrupt");
+            this.buttonRestart = new Button("Restart");
 
             this.SpeedComboBox = new ComboBox();
             this.SpeedComboBox.getItems().addAll("Medium ", "Quick", "Slow", "Random");
@@ -127,8 +136,9 @@ public class Window extends Application implements Runnable, EventHandler<Action
             this.buttonCreate.relocate(1040, 75);
             this.buttonBarrier.relocate(1040, 325);
             this.buttonRevert.relocate(1040, 365);
-            this.buttonInterrupt.relocate(1040, 410);
-            this.buttonSimulation.relocate(1040, 490);
+            this.buttonInterrupt.relocate(1040, 405);
+            this.buttonRestart.relocate(1040, 445);
+            this.buttonSimulation.relocate(1040, 495);
 
             this.testValue.relocate(1040, 40);
             this.textCarries.relocate(1040, 278);
@@ -140,6 +150,7 @@ public class Window extends Application implements Runnable, EventHandler<Action
             this.buttonBarrier.setPrefSize(110, 30);
             this.buttonRevert.setPrefSize(110, 30);
             this.buttonInterrupt.setPrefSize(110, 30);
+            this.buttonRestart.setPrefSize(110, 30);
             this.buttonSimulation.setPrefSize(115, 50);
 
             this.buttonCreate.setOnAction(this);
@@ -147,6 +158,7 @@ public class Window extends Application implements Runnable, EventHandler<Action
             this.buttonInterrupt.setOnAction(this);
             this.buttonRevert.setOnAction(this);
             this.buttonSimulation.setOnAction(this);
+            this.buttonRestart.setOnAction(this);
 
             this.textCarries.setPrefSize(140, 30);
             this.testValue.setPrefSize(140, 30);
@@ -156,6 +168,7 @@ public class Window extends Application implements Runnable, EventHandler<Action
             this.pane.getChildren().add(buttonRevert);
             this.pane.getChildren().add(buttonInterrupt);
             this.pane.getChildren().add(buttonSimulation);
+            this.pane.getChildren().add(buttonRestart);
 
             this.pane.getChildren().add(testValue);
             this.pane.getChildren().add(textCarries);
@@ -167,17 +180,17 @@ public class Window extends Application implements Runnable, EventHandler<Action
 //            this.pane.getChildren().add(textCarries);
             primaryStage.setScene(this.scene);
 
-            this.slow = new FirstLane("thread 1", 750, 200, 0, Utility.Variables.SlOW);
+            this.first = new FirstLane("thread 1", 750, 200, 0, Utility.Variables.SlOW);
 
-            this.slow.setWall(false);
+//            this.slow.setWall(false);
+            this.second = new SecondaLane("thread 2", 800, 200, 0, Utility.Variables.SlOW);
+//            this.med.setWall(true);
 
-            this.med = new SecondaLane("thread 2", 800, 200, 0, Utility.Variables.MEDIUM);
-            this.med.setWall(true);
+            this.third = new ThirdLane("thread 3", 830, 200, 0, Utility.Variables.QUICK);
 
-            this.fast = new ThirdLane("thread 3", 850, 200, 0, Utility.Variables.QUICK);
-
-            this.fast.setWall(true);
-
+//            this.fast.setWall(true);
+            this.fourth = new FourthLane("thread 4", 870, 200, 0, Utility.Variables.MEDIUM);
+            this.fifth = new FifthLane("thread 5", 910, 200, 0, Utility.Variables.QUICK);
             this.thread = new Thread(this);
             this.thread.start();
         } catch (FileNotFoundException | BufferOverflowException ex) {
@@ -187,17 +200,21 @@ public class Window extends Application implements Runnable, EventHandler<Action
     private void draw(GraphicsContext gc) {
         gc.clearRect(0, 0, Variables.WIDTH, Variables.HEIGHT);
         gc.drawImage(this.image, 0, 0);
-        gc.drawImage(this.slow.getImage(), this.slow.getX(), this.slow.getY());
-        gc.drawImage(this.med.getImage(), this.med.getX(), this.med.getY());
-        gc.drawImage(this.fast.getImage(), this.fast.getX(), this.fast.getY());
-        if (med.isWall()) {
-            gc.fillRect(140, 405, 35, 35);
+        gc.drawImage(this.first.getImage(), this.first.getX(), this.first.getY());
+        gc.drawImage(this.second.getImage(), this.second.getX(), this.second.getY());
+        gc.drawImage(this.third.getImage(), this.third.getX(), this.third.getY());
+        gc.drawImage(this.fourth.getImage(), this.fourth.getX(), this.fourth.getY());
+        gc.drawImage(this.fifth.getImage(), this.fifth.getX(), this.fifth.getY());
+
+        if (second.isWall()) {
+            gc.drawImage(barrierImage, 140, 405);
         }
-        if (slow.isWall()) {
-            gc.fillRect(180, 405, 35, 35);
+        if (first.isWall()) {
+            gc.drawImage(barrierImage, 180, 405);
+
         }
-        if (fast.isWall()) {
-            gc.fillRect(100, 405, 35, 35);
+        if (third.isWall()) {
+            gc.drawImage(barrierImage, 100, 405);
 
         }
 
@@ -218,27 +235,48 @@ public class Window extends Application implements Runnable, EventHandler<Action
     @Override
     public void handle(ActionEvent e) {
         if ((Button) e.getSource() == buttonCreate) {
- stopThreads=true;
+
+        }
+        if ((Button) e.getSource() == buttonRestart) {
+            stopThreads = true;
             System.out.println(stopThreads);
-              if (stopThreads == true) {
-                this.slow.resume();
-                this.med.resume();
-                this.fast.resume();
+            if (stopThreads == true) {
+                this.first.resume();
+                this.second.resume();
+                this.third.resume();
+                this.fourth.resume();
+                this.fifth.resume();
             }
-            
+
         }
 
         if ((Button) e.getSource() == buttonBarrier) {
-
+            if(textCarries.getText().equals("1")){
+               first.setWall(true);
+            }
+   if(textCarries.getText().equals("2")){
+                second.setWall(true);
+            }
+      if(textCarries.getText().equals("3")){
+                third.setWall(true);
+            }
+         if(textCarries.getText().equals("4")){
+                fourth.setWall(true);
+            }
+            if(textCarries.getText().equals("5")){
+                fifth.setWall(true);
+            }
         }
         if ((Button) e.getSource() == buttonInterrupt) {
             stopThreads = false;
             if (stopThreads != true) {
-                this.slow.suspend();
-                this.med.suspend();
-                this.fast.suspend();
+                this.first.suspend();
+                this.second.suspend();
+                this.third.suspend();
+                this.fourth.suspend();
+                this.fifth.suspend();
             }
-           
+
         }
         if ((Button) e.getSource() == buttonRevert) {
 
@@ -247,9 +285,11 @@ public class Window extends Application implements Runnable, EventHandler<Action
             stopThreads = true;
             System.out.println(stopThreads);
             if (stopThreads == true) {
-                this.slow.start();
-                this.med.start();
-                this.fast.start();
+                this.first.start();
+                this.second.start();
+                this.third.start();
+                this.fourth.start();
+                this.fifth.start();
                 AudioClip clip = new AudioClip(this.getClass().getResource("vuvuzela.mp3").toString());
                 clip.play();
             }

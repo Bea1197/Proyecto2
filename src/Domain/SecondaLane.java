@@ -15,19 +15,26 @@ public class SecondaLane extends Character {
         setSprite();
     }
 
-    public void setSprite() throws FileNotFoundException {
-        
-      
+     public void setSprite() throws FileNotFoundException {
         ArrayList<Image> sprite = super.getSprite();
         for (int i = 0; i < 6; i++) {
-            sprite.add(new Image(new FileInputStream("src/Assets/mega" + i + ".gif")));
+            if (super.getSpeed() == Utility.Variables.SlOW) {
+                sprite.add(new Image(new FileInputStream("src/Assets/bill" + i + ".gif")));
+            } else if (super.getSpeed() == Utility.Variables.QUICK) {
+                sprite.add(new Image(new FileInputStream("src/Assets/Ryu" + i + ".gif")));
+            } else if (super.getSpeed() == Utility.Variables.MEDIUM) {
+                sprite.add(new Image(new FileInputStream("src/Assets/mega" + i + ".gif")));
+            } else if (super.getSpeed() == Utility.Variables.RANDOM) {
+                sprite.add(new Image(new FileInputStream("src/Assets/Running" + i + ".png")));
+            }
         }
         super.setSprite(sprite);
     }
 
+
     @Override
     public void run() {
-       ArrayList<Image> sprite = super.getSprite();
+        ArrayList<Image> sprite = super.getSprite();
         int x = 0;
         int bandera = 1;
         while (true) {
@@ -51,17 +58,17 @@ public class SecondaLane extends Character {
                                 Thread.sleep(100);
                                 super.setX(i);
                                 bandera = 3;
-                                
-                           
+
                             }
                         }
                         break;
-    
-                                           case 3:
-                        if(super.isWall())
-                               suspend();
-                        bandera=4;
-                           
+
+                    case 3:
+                        if (super.isWall()) {
+                            suspend();
+                        }
+                        bandera = 4;
+
                         break;
 
                     case 4:
@@ -71,7 +78,6 @@ public class SecondaLane extends Character {
                                 Thread.sleep(100);
                                 super.setY(i);
                                 bandera = 5;
-                          
 
                             }
                         }
@@ -106,6 +112,6 @@ public class SecondaLane extends Character {
 
             } catch (InterruptedException ex) {
             }
-             }
+        }
     }//run
 }//fin de clase

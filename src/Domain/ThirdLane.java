@@ -12,10 +12,18 @@ public class ThirdLane extends Character {
         setSprite();
     }
 
-    public void setSprite() throws FileNotFoundException {
+      public void setSprite() throws FileNotFoundException {
         ArrayList<Image> sprite = super.getSprite();
         for (int i = 0; i < 6; i++) {
-            sprite.add(new Image(new FileInputStream("src/Assets/Ryu" + i + ".gif")));
+            if (super.getSpeed() == Utility.Variables.SlOW) {
+                sprite.add(new Image(new FileInputStream("src/Assets/bill" + i + ".gif")));
+            } else if (super.getSpeed() == Utility.Variables.QUICK) {
+                sprite.add(new Image(new FileInputStream("src/Assets/Ryu" + i + ".gif")));
+            } else if (super.getSpeed() == Utility.Variables.MEDIUM) {
+                sprite.add(new Image(new FileInputStream("src/Assets/mega" + i + ".gif")));
+            } else if (super.getSpeed() == Utility.Variables.RANDOM) {
+                sprite.add(new Image(new FileInputStream("src/Assets/Running" + i + ".png")));
+            }
         }
         super.setSprite(sprite);
     }
@@ -29,12 +37,14 @@ public class ThirdLane extends Character {
             try {
                 switch (bandera) {
                     case 1:
-                        for (int i = 200; i < 450; i = i + 15) {
+                        for (int i = 200; i < 440; i = i + 15) {
                             for (int j = 0; j < 3; j++) {
 
                                 super.setImage(sprite.get(j));
                                 Thread.sleep(this.getSpeed());
+                               
                                 super.setY(i);
+                                System.out.println(i);
                             }
                         }
                         bandera = 2;
@@ -47,6 +57,7 @@ public class ThirdLane extends Character {
                                 Thread.sleep(100);
                                 super.setX(i);
                                 bandera = 3;
+                                 System.out.println(i);
 
                             }
                         }
@@ -66,7 +77,7 @@ public class ThirdLane extends Character {
                                 Thread.sleep(100);
                                 super.setY(i);
                                 bandera = 5;
-
+ System.out.println(i);
                             }
                         }
                         break;
@@ -78,7 +89,7 @@ public class ThirdLane extends Character {
                                 Thread.sleep(100);
                                 super.setX(i);
                                 bandera = 6;
-
+ System.out.println(i);
                             }
                         }
                         break;
