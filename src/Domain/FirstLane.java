@@ -12,13 +12,22 @@ public class FirstLane extends Character {
         setSprite();
     }
 
-    public void setSprite() throws FileNotFoundException {
+     public void setSprite() throws FileNotFoundException {
         ArrayList<Image> sprite = super.getSprite();
         for (int i = 0; i < 6; i++) {
-            sprite.add(new Image(new FileInputStream("src/Assets/bill" + i + ".gif")));
+            if (super.getSpeed() == Utility.Variables.SlOW) {
+                sprite.add(new Image(new FileInputStream("src/Assets/bill" + i + ".gif")));
+            } else if (super.getSpeed() == Utility.Variables.QUICK) {
+                sprite.add(new Image(new FileInputStream("src/Assets/Ryu" + i + ".gif")));
+            } else if (super.getSpeed() == Utility.Variables.MEDIUM) {
+                sprite.add(new Image(new FileInputStream("src/Assets/mega" + i + ".gif")));
+            } else if (super.getSpeed() == Utility.Variables.RANDOM) {
+                sprite.add(new Image(new FileInputStream("src/Assets/Running" + i + ".png")));
+            }
         }
         super.setSprite(sprite);
     }
+
 
     @Override
     public void run() {
