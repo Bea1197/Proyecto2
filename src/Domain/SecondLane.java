@@ -1,23 +1,17 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package Domain;
 
+import Data.XMLCharacterManager;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.ArrayList;
 import javafx.scene.image.Image;
+import org.jdom.JDOMException;
 
-/**
- *
- * @author Steven
- */
-public class FourthLane extends Character {
+public class SecondLane extends Character {
 
-    public FourthLane(String name, int x, int y, int imgNum, int speed) throws FileNotFoundException {
-        super(name, x, y, imgNum, speed);
+    public SecondLane(String identification, int x, int y, int imgNum, int speed) throws FileNotFoundException {
+        super(identification, x, y, imgNum, speed);
         setSprite();
     }
 
@@ -46,17 +40,17 @@ public class FourthLane extends Character {
             try {
                 switch (bandera) {
                     case 1:
-                           if (!super.isReverse()) {
-                            for (int i = super.getY(); i < 480; i = i + 15) {
+                        if (!super.isReverse()) {
+                            for (int i = super.getY(); i < 420; i = i + 15) {
                                 for (int j = 0; j < 3; j++) {
                                     super.setImage(sprite.get(j));
-                                    Thread.sleep(100);
+                                    Thread.sleep(this.getSpeed());
                                 }
                                 super.setY(i);
 
                                 bandera = 2;
                                 if (super.isReverse()) {
-                                    i = 480;
+                                    i = 420;
                                     bandera = 1;
                                 }
                             }
@@ -64,7 +58,7 @@ public class FourthLane extends Character {
                             for (int r = super.getY(); r > 200; r = r - 15) {
                                 for (int t = 3; t < 6; t++) {
                                     super.setImage(sprite.get(t));
-                                    Thread.sleep(100);
+                                    Thread.sleep(this.getSpeed());
                                 }
                                 super.setY(r);
 
@@ -77,12 +71,9 @@ public class FourthLane extends Character {
                         }
 
                         break;
-                        
-                       
-
                     case 2:
-                          if (!super.isReverse()) {
-                            for (int i = super.getX(); i > 50; i = i - 15) {
+                        if (!super.isReverse()) {
+                            for (int i = super.getX(); i > 110; i = i - 15) {
                                 for (int j = 3; j < 6; j++) {
                                     super.setImage(sprite.get(j));
                                     Thread.sleep(100);
@@ -90,12 +81,12 @@ public class FourthLane extends Character {
                                 super.setX(i);
                                 bandera = 3;
                                 if (super.isReverse()) {
-                                    i = 50;
+                                    i = 110;
                                     bandera = 2;
                                 }
                             }
                         } else {
-                            for (int i = super.getX(); i < 750; i = i + 15) {
+                            for (int i = super.getX(); i < 800; i = i + 15) {
                                 for (int j = 0; j < 3; j++) {
                                     super.setImage(sprite.get(j));
                                     Thread.sleep(100);
@@ -104,7 +95,7 @@ public class FourthLane extends Character {
 
                                 bandera = 1;
                                 if (!super.isReverse()) {
-                                    i = 750;
+                                    i = 800;
 
                                     bandera = 2;
                                 }
@@ -112,24 +103,19 @@ public class FourthLane extends Character {
                         }
 
                         break;
-                        
-                        
-                     
-                     
 
                     case 3:
-                        
-                        
-                        
                         if (super.isWall()) {
                             suspend();
                         }
                         bandera = 4;
 
                         break;
+
                     case 4:
-                                                if (!super.isReverse()) {
-                            for (int i = super.getY(); i > 20; i = i - 15) {
+
+                        if (!super.isReverse()) {
+                            for (int i = super.getY(); i > 60; i = i - 15) {
                                 for (int j = 0; j < 3; j++) {
                                     super.setImage(sprite.get(j));
                                     Thread.sleep(100);
@@ -137,13 +123,13 @@ public class FourthLane extends Character {
                                 super.setY(i);
                                 bandera = 5;
                                 if (super.isReverse()) {
-                                    i = 20;
+                                    i = 70;
                                     bandera = 4;
 
                                 }
                             }
                         } else {
-                            for (int i = super.getY(); i < 385; i = i + 15) {
+                            for (int i = super.getY(); i < 410; i = i + 15) {
                                 for (int j = 0; j < 3; j++) {
                                     super.setImage(sprite.get(j));
                                     Thread.sleep(100);
@@ -151,31 +137,30 @@ public class FourthLane extends Character {
                                 super.setY(i);
                                 bandera = 2;
                                 if (!super.isReverse()) {
-                                    i = 385;
+                                    i = 410;
                                     bandera = 4;
                                 }
                             }
                         }
                         break;
-                        
-                     
+
                     case 5:
-                         if (!super.isReverse()) {
-                            for (int i = super.getX(); i < 870; i = i + 15) {
+                        if (!super.isReverse()) {
+                            for (int i = super.getX(); i < 790; i = i + 15) {
                                 for (int j = 0; j < 3; j++) {
                                     super.setImage(sprite.get(j));
                                     Thread.sleep(100);
                                 }
                                 super.setX(i);
-                                System.out.println(i);
+
                                 bandera = 6;
                                 if (super.isReverse()) {
-                                    i = 870;
+                                    i = 790;
                                     bandera = 5;
                                 }
                             }
                         } else {
-                            for (int i = super.getX(); i > 140; i = i - 15) {
+                            for (int i = super.getX(); i > 125; i = i - 15) {
                                 for (int j = 3; j < 6; j++) {
                                     super.setImage(sprite.get(j));
                                     Thread.sleep(100);
@@ -183,17 +168,15 @@ public class FourthLane extends Character {
                                 super.setX(i);
                                 bandera = 4;
                                 if (!super.isReverse()) {
-                                    i = 140;
+                                    i = 125;
                                     bandera = 5;
                                 }
                             }
                         }
                         break;
 
-                        
-                      
                     case 6:
-                         if (!super.isReverse()) {
+                        if (!super.isReverse()) {
                             for (int i = super.getY(); i < 220; i = i + 15) {
                                 for (int j = 3; j < 6; j++) {
                                     super.setImage(sprite.get(j));
@@ -207,7 +190,7 @@ public class FourthLane extends Character {
                                 }
                             }
                         } else {
-                            for (int i = super.getY(); i > 20; i = i - 15) {
+                            for (int i = super.getY(); i > 60; i = i - 15) {
                                 for (int j = 3; j < 6; j++) {
                                     super.setImage(sprite.get(j));
                                     Thread.sleep(100);
@@ -215,23 +198,18 @@ public class FourthLane extends Character {
                                 super.setY(i);
                                 bandera = 5;
                                 if (!super.isReverse()) {
-                                    i = 20;
+                                    i = 70;
                                     bandera = 6;
                                 }
                             }
                         }
                         break;
-
-                        
-          
-
                     default:
                         break;
                 }
 
             } catch (InterruptedException ex) {
             }
-        }//while
+        }
     }//run
 }//fin de clase
-

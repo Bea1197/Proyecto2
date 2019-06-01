@@ -12,7 +12,7 @@ public class FirstLane extends Character {
         setSprite();
     }
 
-     public void setSprite() throws FileNotFoundException {
+    public void setSprite() throws FileNotFoundException {
         ArrayList<Image> sprite = super.getSprite();
         for (int i = 0; i < 6; i++) {
             if (super.getSpeed() == Utility.Variables.SlOW) {
@@ -28,36 +28,80 @@ public class FirstLane extends Character {
         super.setSprite(sprite);
     }
 
-
     @Override
     public void run() {
         ArrayList<Image> sprite = super.getSprite();
         int x = 0;
         int bandera = 1;
+        int tempX = 0;
+        int tempY = 0;
         while (true) {
             try {
                 switch (bandera) {
                     case 1:
-                        for (int i = 200; i < 385; i = i + 15) {
-                            for (int j = 0; j < 3; j++) {
-
-                                super.setImage(sprite.get(j));
-                                Thread.sleep(this.getSpeed());
+                        if (!super.isReverse()) {
+                            for (int i = super.getY(); i < 385; i = i + 15) {
+                                for (int j = 0; j < 3; j++) {
+                                    super.setImage(sprite.get(j));
+                                    Thread.sleep(this.getSpeed());
+                                }
+                               
                                 super.setY(i);
+                                tempY = i;
+                                bandera = 2;
+                                if (super.isReverse()) {
+                                    i = 385;
+                                    bandera = 1;
+                                }
+                            }
+                        } else {
+                            for (int r = super.getY(); r > 200; r = r - 15) {
+                                for (int t = 3; t < 6; t++) {
+                                    super.setImage(sprite.get(t));
+                                    Thread.sleep(this.getSpeed());
+                                }
+                                super.setY(r);
+                                tempY = r;
+                                bandera = -1;
+                                if (!super.isReverse()) {
+                                    r = 200;
+                                    bandera = 1;
+                                }
                             }
                         }
-                        bandera = 2;
+
                         break;
                     case 2:
-                        for (int i = 750; i > 140; i = i - 15) {
-                            for (int j = 3; j < 6; j++) {
-                                super.setImage(sprite.get(j));
-                                Thread.sleep(100);
+                        if (!super.isReverse()) {
+                            for (int i = super.getX(); i > 140; i = i - 15) {
+                                for (int j = 3; j < 6; j++) {
+                                    super.setImage(sprite.get(j));
+                                    Thread.sleep(100);
+                                }
                                 super.setX(i);
+                                tempX = i;
                                 bandera = 3;
-
+                                if (super.isReverse()) {
+                                    i = 140;
+                                    bandera = 2;
+                                }
+                            }
+                        } else {
+                            for (int i = super.getX(); i < 750; i = i + 15) {
+                                for (int j = 0; j < 3; j++) {
+                                    super.setImage(sprite.get(j));
+                                    Thread.sleep(100);
+                                }
+                                super.setX(i);
+                                tempX = i;
+                                bandera = 1;
+                                if (!super.isReverse()) {
+                                    i = 750;
+                                    bandera = 2;
+                                }
                             }
                         }
+
                         break;
 
                     case 3:
@@ -68,34 +112,94 @@ public class FirstLane extends Character {
 
                         break;
                     case 4:
-                        for (int i = 385; i >= 90; i = i - 15) {
-                            for (int j = 0; j < 3; j++) {
-                                super.setImage(sprite.get(j));
-                                Thread.sleep(100);
+                        System.out.println("4");
+                        if (!super.isReverse()) {
+                            for (int i = super.getY(); i > 90; i = i - 15) {
+                                for (int j = 0; j < 3; j++) {
+                                    super.setImage(sprite.get(j));
+                                    Thread.sleep(100);
+                                }
                                 super.setY(i);
                                 bandera = 5;
-
+                                tempY = i;
+                                if (super.isReverse()) {
+                                    i = 89;
+                                    bandera = 4;
+                                }
+                            }
+                        } else {
+                            for (int i = super.getY(); i < 385; i = i + 15) {
+                                for (int j = 0; j < 3; j++) {
+                                    super.setImage(sprite.get(j));
+                                    Thread.sleep(100);
+                                }
+                                super.setY(i);
+                                bandera = 2;
+                                if (!super.isReverse()) {
+                                    i = 385;
+                                    bandera = 4;
+                                }
                             }
                         }
                         break;
 
                     case 5:
-                        for (int i = 140; i < 750; i = i + 15) {
-                            for (int j = 0; j < 3; j++) {
-                                super.setImage(sprite.get(j));
-                                Thread.sleep(100);
+                        if (!super.isReverse()) {
+                            for (int i = super.getX(); i < 750; i = i + 15) {
+                                for (int j = 0; j < 3; j++) {
+                                    super.setImage(sprite.get(j));
+                                    Thread.sleep(100);
+                                }
                                 super.setX(i);
+                                tempX = i;
                                 bandera = 6;
+                                if (super.isReverse()) {
+                                    i = 750;
+                                    bandera = 5;
+                                }
+                            }
+                        } else {
+                            for (int i = super.getX(); i > 140; i = i - 15) {
+                                for (int j = 3; j < 6; j++) {
+                                    super.setImage(sprite.get(j));
+                                    Thread.sleep(100);
+                                }
+                                super.setX(i);
+                                bandera = 4;
+                                if (!super.isReverse()) {
+                                    i = 140;
+                                    bandera = 5;
+                                }
                             }
                         }
                         break;
                     case 6:
-                        for (int i = 90; i < 220; i = i + 15) {
-                            for (int j = 3; j < 6; j++) {
-                                super.setImage(sprite.get(j));
-                                Thread.sleep(100);
+                        if (!super.isReverse()) {
+                            for (int i = super.getY(); i < 220; i = i + 15) {
+                                for (int j = 3; j < 6; j++) {
+                                    super.setImage(sprite.get(j));
+                                    Thread.sleep(100);
+                                }
                                 super.setY(i);
                                 bandera = -1;
+                                tempY = i;
+                                if (super.isReverse()) {
+                                    i = 220;
+                                    bandera = 6;
+                                }
+                            }
+                        } else {
+                            for (int i = super.getY(); i > 90; i = i - 15) {
+                                for (int j = 3; j < 6; j++) {
+                                    super.setImage(sprite.get(j));
+                                    Thread.sleep(100);
+                                }
+                                super.setY(i);
+                                bandera = 5;
+                                if (!super.isReverse()) {
+                                    i = 90;
+                                    bandera = 6;
+                                }
                             }
                         }
                         break;
@@ -103,7 +207,6 @@ public class FirstLane extends Character {
                     default:
                         break;
                 }
-
             } catch (InterruptedException ex) {
             }
         }//while

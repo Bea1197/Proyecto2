@@ -12,17 +12,14 @@ import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import threadwork.ThreadWork;
 
-/**
- *
- * @author Diego
- */
-public class NewFXMain extends Application implements EventHandler<ActionEvent>{
-    
+public class NewFXMain extends Application implements EventHandler<ActionEvent> {
+
     Button btn_Start;
     Pane root;
-  Stage second;
+    Stage second;
     ThreadWork window;
-    public void init(){
+
+    public void init() {
         root = new Pane();
         this.btn_Start = new Button("Start!");
         this.btn_Start.setFont(Font.font("MOON", 25));
@@ -30,15 +27,15 @@ public class NewFXMain extends Application implements EventHandler<ActionEvent>{
 //        this.second= new Stage();
 //        this.window= new ThreadWork();
     }
-    
-    public void background(){
+
+    public void background() {
         String image = "background.jpg";
         root.setStyle("-fx-background-image: url('" + image + "'); "
-           +"-fx-background-position: left top, center;"
-           +"-fx-background-repeat: no-repeat;"
-           +"-fx-background-size: cover, auto;");  
+                + "-fx-background-position: left top, center;"
+                + "-fx-background-repeat: no-repeat;"
+                + "-fx-background-size: cover, auto;");
     }
-    
+
     @Override
     public void start(Stage primaryStage) {
         init();
@@ -46,9 +43,9 @@ public class NewFXMain extends Application implements EventHandler<ActionEvent>{
         this.btn_Start.setLayoutX(245);
         this.btn_Start.setLayoutY(245);
         root.getChildren().add(this.btn_Start);
-        
+
         Scene scene = new Scene(root, 600, 400);
-        
+
         primaryStage.setTitle("Main Menu");
         primaryStage.setScene(scene);
         primaryStage.show();
@@ -63,15 +60,14 @@ public class NewFXMain extends Application implements EventHandler<ActionEvent>{
 
     @Override
     public void handle(ActionEvent event) {
-                if ((Button) event.getSource() == btn_Start) {
-                    try {
-                        Application.launch(Window.class);
-                      
-                    } catch (Exception ex) {
-                        Logger.getLogger(NewFXMain.class.getName()).log(Level.SEVERE, null, ex);
-                    }
+        if ((Button) event.getSource() == btn_Start) {
+            try {
+                Application.launch(Window.class);
 
+            } catch (Exception ex) {
+                Logger.getLogger(NewFXMain.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
-                
+
     }
 }

@@ -47,29 +47,71 @@ public class FifthLane extends Character {
             try {
                 switch (bandera) {
                     case 1:
-                        for (int i = 200; i < 520; i = i + 15) {
-                            for (int j = 0; j < 3; j++) {
-
-                                super.setImage(sprite.get(j));
-                                Thread.sleep(this.getSpeed());
+                        if (!super.isReverse()) {
+                            for (int i = super.getY(); i < 520; i = i + 15) {
+                                for (int j = 0; j < 3; j++) {
+                                    super.setImage(sprite.get(j));
+                                    Thread.sleep(100);
+                                }
                                 super.setY(i);
+
+                                bandera = 2;
+                                if (super.isReverse()) {
+                                    i = 520;
+                                    bandera = 1;
+                                }
+                            }
+                        } else {
+                            for (int r = super.getY(); r > 200; r = r - 15) {
+                                for (int t = 3; t < 6; t++) {
+                                    super.setImage(sprite.get(t));
+                                    Thread.sleep(100);
+                                }
+                                super.setY(r);
+
+                                bandera = -1;
+                                if (!super.isReverse()) {
+                                    r = 200;
+                                    bandera = 1;
+                                }
                             }
                         }
-                        bandera = 2;
-                        break;
 
+                        break;
+                        
+                    
                     case 2:
-                        for (int i = 750; i > 20; i = i - 15) {
-                            for (int j = 3; j < 6; j++) {
-                                super.setImage(sprite.get(j));
-                                Thread.sleep(100);
+                         if (!super.isReverse()) {
+                            for (int i = super.getX(); i > 20; i = i - 15) {
+                                for (int j = 3; j < 6; j++) {
+                                    super.setImage(sprite.get(j));
+                                    Thread.sleep(100);
+                                }
                                 super.setX(i);
                                 bandera = 3;
+                                if (super.isReverse()) {
+                                    i = 20;
+                                    bandera = 2;
+                                }
+                            }
+                        } else {
+                            for (int i = super.getX(); i < 750; i = i + 15) {
+                                for (int j = 0; j < 3; j++) {
+                                    super.setImage(sprite.get(j));
+                                    Thread.sleep(100);
+                                }
+                                super.setX(i);
 
+                                bandera = 1;
+                                if (!super.isReverse()) {
+                                    i = 750;
+
+                                    bandera = 2;
+                                }
                             }
                         }
-                        break;
 
+                        break;
                     case 3:
                         if (super.isWall()) {
                             suspend();
@@ -78,40 +120,103 @@ public class FifthLane extends Character {
 
                         break;
                     case 4:
-                        for (int i = 385; i >= 5; i = i - 15) {
-                            for (int j = 0; j < 3; j++) {
-                                super.setImage(sprite.get(j));
-                                Thread.sleep(100);
+                              if (!super.isReverse()) {
+                            for (int i = super.getY(); i > 5; i = i - 15) {
+                                for (int j = 0; j < 3; j++) {
+                                    super.setImage(sprite.get(j));
+                                    Thread.sleep(100);
+                                }
                                 super.setY(i);
                                 bandera = 5;
+                                if (super.isReverse()) {
+                                    i = 5;
+                                    bandera = 4;
 
+                                }
+                            }
+                        } else {
+                            for (int i = super.getY(); i < 385; i = i + 15) {
+                                for (int j = 0; j < 3; j++) {
+                                    super.setImage(sprite.get(j));
+                                    Thread.sleep(100);
+                                }
+                                super.setY(i);
+                                bandera = 2;
+                                if (!super.isReverse()) {
+                                    i = 385;
+                                    bandera = 4;
+                                }
                             }
                         }
                         break;
+                        
+                        
+                       
 
                     case 5:
-                        for (int i = 140; i < 900; i = i + 15) {
-                            for (int j = 0; j < 3; j++) {
-                                super.setImage(sprite.get(j));
-                                Thread.sleep(100);
+                        if (!super.isReverse()) {
+                            for (int i = super.getX(); i < 900; i = i + 15) {
+                                for (int j = 0; j < 3; j++) {
+                                    super.setImage(sprite.get(j));
+                                    Thread.sleep(100);
+                                }
                                 super.setX(i);
+                                System.out.println(i);
                                 bandera = 6;
-
+                                if (super.isReverse()) {
+                                    i = 900;
+                                    bandera = 5;
+                                }
+                            }
+                        } else {
+                            for (int i = super.getX(); i > 140; i = i - 15) {
+                                for (int j = 3; j < 6; j++) {
+                                    super.setImage(sprite.get(j));
+                                    Thread.sleep(100);
+                                }
+                                super.setX(i);
+                                bandera = 4;
+                                if (!super.isReverse()) {
+                                    i = 140;
+                                    bandera = 5;
+                                }
                             }
                         }
                         break;
+
                     case 6:
-                        for (int i = 5; i < 220; i = i + 15) {
-                            for (int j = 3; j < 6; j++) {
-                                super.setImage(sprite.get(j));
-                                Thread.sleep(100);
+                               if (!super.isReverse()) {
+                            for (int i = super.getY(); i < 220; i = i + 15) {
+                                for (int j = 3; j < 6; j++) {
+                                    super.setImage(sprite.get(j));
+                                    Thread.sleep(100);
+                                }
                                 super.setY(i);
                                 bandera = -1;
-
+                                if (super.isReverse()) {
+                                    i = 220;
+                                    bandera = 6;
+                                }
+                            }
+                        } else {
+                            for (int i = super.getY(); i > 5; i = i - 15) {
+                                for (int j = 3; j < 6; j++) {
+                                    super.setImage(sprite.get(j));
+                                    Thread.sleep(100);
+                                }
+                                super.setY(i);
+                                bandera = 5;
+                                if (!super.isReverse()) {
+                                    i = 20;
+                                    bandera = 6;
+                                }
                             }
                         }
                         break;
 
+                        
+                        
+                        
                     default:
                         break;
                 }

@@ -4,10 +4,9 @@ import Data.XMLCharacterManager;
 import Domain.FifthLane;
 import Domain.FirstLane;
 import Domain.FourthLane;
-import Domain.SecondaLane;
+import Domain.SecondLane;
 import Domain.ThirdLane;
 import Utility.Variables;
-import com.sun.xml.internal.fastinfoset.util.CharArray;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -25,11 +24,11 @@ import javafx.scene.control.Label;
 
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.scene.media.AudioClip;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
-import javax.swing.JOptionPane;
 import org.jdom.JDOMException;
 
 public class Window extends Application implements Runnable, EventHandler<ActionEvent> {
@@ -44,7 +43,7 @@ public class Window extends Application implements Runnable, EventHandler<Action
 
     private ThirdLane third;
     private FirstLane first;
-    private SecondaLane second;
+    private SecondLane second;
     private FourthLane fourth;
     private FifthLane fifth;
     private XMLCharacterManager data;
@@ -60,6 +59,7 @@ public class Window extends Application implements Runnable, EventHandler<Action
     private Button buttonSimulation;
     private Button buttonInterrupt;
     private Button buttonRestart;
+    private Button buttonSoundOnOff;
 
     private TextField testValue;
     private TextField textCarries;
@@ -67,10 +67,16 @@ public class Window extends Application implements Runnable, EventHandler<Action
     private Label labelValue;
     private Label labelCarriles;
 
+    private boolean soundOnOff;
+    Image imageSound;
+    ImageView imageView;
+
     private ComboBox SpeedComboBox;
 
     boolean stopThreads = false;
     private ArrayList<Image> imagesSprite;
+
+    AudioClip clip;
 
     @Override
     public void start(Stage primaryStage) throws Exception {
@@ -127,6 +133,14 @@ public class Window extends Application implements Runnable, EventHandler<Action
             this.buttonSimulation = new Button("Simulation");
             this.buttonInterrupt = new Button("Interrupt");
             this.buttonRestart = new Button("Restart");
+            this.buttonSoundOnOff = new Button();
+            this.soundOnOff = true;
+            this.imageSound = new Image(getClass().getResourceAsStream("/SoundOn.png"));
+            imageView = new ImageView(imageSound);
+            imageView.setFitWidth(40);
+            imageView.setFitHeight(30);
+            this.buttonSoundOnOff.setGraphic(imageView);
+            this.clip = new AudioClip(this.getClass().getResource("batman.mp3").toString());
 
             this.SpeedComboBox = new ComboBox();
             this.SpeedComboBox.getItems().addAll("Medium ", "Quick", "Slow", "Random");
@@ -139,6 +153,7 @@ public class Window extends Application implements Runnable, EventHandler<Action
             this.buttonInterrupt.relocate(1040, 405);
             this.buttonRestart.relocate(1040, 445);
             this.buttonSimulation.relocate(1040, 495);
+            this.buttonSoundOnOff.relocate(1070, 555);
 
             this.testValue.relocate(1040, 40);
             this.textCarries.relocate(1040, 278);
@@ -151,6 +166,7 @@ public class Window extends Application implements Runnable, EventHandler<Action
             this.buttonRevert.setPrefSize(110, 30);
             this.buttonInterrupt.setPrefSize(110, 30);
             this.buttonRestart.setPrefSize(110, 30);
+            this.buttonSoundOnOff.setPrefSize(50, 30);
             this.buttonSimulation.setPrefSize(115, 50);
 
             this.buttonCreate.setOnAction(this);
@@ -158,6 +174,7 @@ public class Window extends Application implements Runnable, EventHandler<Action
             this.buttonInterrupt.setOnAction(this);
             this.buttonRevert.setOnAction(this);
             this.buttonSimulation.setOnAction(this);
+            this.buttonSoundOnOff.setOnAction(this);
             this.buttonRestart.setOnAction(this);
 
             this.textCarries.setPrefSize(140, 30);
@@ -169,6 +186,7 @@ public class Window extends Application implements Runnable, EventHandler<Action
             this.pane.getChildren().add(buttonInterrupt);
             this.pane.getChildren().add(buttonSimulation);
             this.pane.getChildren().add(buttonRestart);
+            this.pane.getChildren().add(buttonSoundOnOff);
 
             this.pane.getChildren().add(testValue);
             this.pane.getChildren().add(textCarries);
@@ -183,7 +201,7 @@ public class Window extends Application implements Runnable, EventHandler<Action
             this.first = new FirstLane("thread 1", 750, 200, 0, Utility.Variables.SlOW);
 
 //            this.slow.setWall(false);
-            this.second = new SecondaLane("thread 2", 800, 200, 0, Utility.Variables.SlOW);
+            this.second = new SecondLane("thread 2", 800, 200, 0, Utility.Variables.SlOW);
 //            this.med.setWall(true);
 
             this.third = new ThirdLane("thread 3", 830, 200, 0, Utility.Variables.QUICK);
@@ -191,6 +209,11 @@ public class Window extends Application implements Runnable, EventHandler<Action
 //            this.fast.setWall(true);
             this.fourth = new FourthLane("thread 4", 870, 200, 0, Utility.Variables.MEDIUM);
             this.fifth = new FifthLane("thread 5", 910, 200, 0, Utility.Variables.QUICK);
+//             this.first.start();
+//                this.second.start();
+//                this.third.start();
+//                this.fourth.start();
+//                this.fifth.start();
             this.thread = new Thread(this);
             this.thread.start();
         } catch (FileNotFoundException | BufferOverflowException ex) {
@@ -200,28 +223,36 @@ public class Window extends Application implements Runnable, EventHandler<Action
     private void draw(GraphicsContext gc) {
         gc.clearRect(0, 0, Variables.WIDTH, Variables.HEIGHT);
         gc.drawImage(this.image, 0, 0);
+        
         gc.drawImage(this.first.getImage(), this.first.getX(), this.first.getY());
         gc.drawImage(this.second.getImage(), this.second.getX(), this.second.getY());
         gc.drawImage(this.third.getImage(), this.third.getX(), this.third.getY());
         gc.drawImage(this.fourth.getImage(), this.fourth.getX(), this.fourth.getY());
         gc.drawImage(this.fifth.getImage(), this.fifth.getX(), this.fifth.getY());
 
-        if (second.isWall()) {
-            gc.drawImage(barrierImage, 140, 405);
-        }
         if (first.isWall()) {
             gc.drawImage(barrierImage, 180, 405);
 
         }
-        if (third.isWall()) {
-            gc.drawImage(barrierImage, 100, 405);
-
+        if (second.isWall()) {
+            gc.drawImage(barrierImage, 150, 405);
         }
 
+        if (third.isWall()) {
+            gc.drawImage(barrierImage, 120, 405);
+
+        }
+        if (fourth.isWall()) {
+            gc.drawImage(barrierImage, 90, 405);
+
+        }
+        if (fifth.isWall()) {
+            gc.drawImage(barrierImage, 60, 405);
+
+        }
     }
 
     public void Music() {
-        AudioClip clip = new AudioClip(this.getClass().getResource("batman.mp3").toString());
         clip.play();
     }
 
@@ -246,27 +277,49 @@ public class Window extends Application implements Runnable, EventHandler<Action
                 this.third.resume();
                 this.fourth.resume();
                 this.fifth.resume();
+
+            }
+            if (textCarries.getText().equals("1")) {
+                first.setWall(false);
+                
+            }
+           
+            if (textCarries.getText().equals("2")) {
+                second.setWall(false);
+            }
+            if (textCarries.getText().equals("3")) {
+                third.setWall(false);
+            }
+            if (textCarries.getText().equals("4")) {
+                fourth.setWall(false);
+            }
+            if (textCarries.getText().equals("5")) {
+                fifth.setWall(false);
             }
 
         }
 
         if ((Button) e.getSource() == buttonBarrier) {
-            if(textCarries.getText().equals("1")){
-               first.setWall(true);
+                      
+
+            if (textCarries.getText().equals("1")) {
+                first.setWall(true);
             }
-   if(textCarries.getText().equals("2")){
+            if (textCarries.getText().equals("2")) {
                 second.setWall(true);
             }
-      if(textCarries.getText().equals("3")){
+            if (textCarries.getText().equals("3")) {
                 third.setWall(true);
             }
-         if(textCarries.getText().equals("4")){
+            if (textCarries.getText().equals("4")) {
                 fourth.setWall(true);
             }
-            if(textCarries.getText().equals("5")){
+            if (textCarries.getText().equals("5")) {
                 fifth.setWall(true);
             }
+            
         }
+        
         if ((Button) e.getSource() == buttonInterrupt) {
             stopThreads = false;
             if (stopThreads != true) {
@@ -279,7 +332,69 @@ public class Window extends Application implements Runnable, EventHandler<Action
 
         }
         if ((Button) e.getSource() == buttonRevert) {
+                        if (textCarries.getText().equals("1")) {
+                    
+            if (!first.isReverse()) {
+                first.setReverse(true);
+            } else {
+               first.setReverse(false);
+            }
+            }
+            if (textCarries.getText().equals("2")) {
+                       
+            if (!second.isReverse()) {
+                second.setReverse(true);
+            } else {
+               second.setReverse(false);
+            }
+            }
+            if (textCarries.getText().equals("3")) {
+                       
+            if (!third.isReverse()) {
+                third.setReverse(true);
+            } else {
+               third.setReverse(false);
+            }
+            }
+            if (textCarries.getText().equals("4")) {
+                     
+            if (!fourth.isReverse()) {
+                fourth.setReverse(true);
+            } else {
+               fourth.setReverse(false);
+            }
+            }
+            if (textCarries.getText().equals("5")) {
+                     
+            if (!fifth.isReverse()) {
+                fifth.setReverse(true);
+            } else {
+               fifth.setReverse(false);
+            }
+            }
+            
+            
+     
 
+        }
+        if ((Button) e.getSource() == buttonSoundOnOff) {
+            if (soundOnOff == true) {
+                clip.stop();
+                soundOnOff = false;
+                this.imageSound = new Image(getClass().getResourceAsStream("/SoundOff.png"));
+                imageView = new ImageView(imageSound);
+                imageView.setFitWidth(40);
+                imageView.setFitHeight(30);
+                this.buttonSoundOnOff.setGraphic(imageView);
+            } else {
+                clip.play();
+                soundOnOff = true;
+                this.imageSound = new Image(getClass().getResourceAsStream("/SoundOn.png"));
+                imageView = new ImageView(imageSound);
+                imageView.setFitWidth(40);
+                imageView.setFitHeight(30);
+                this.buttonSoundOnOff.setGraphic(imageView);
+            }
         }
         if ((Button) e.getSource() == buttonSimulation) {
             stopThreads = true;
@@ -290,8 +405,9 @@ public class Window extends Application implements Runnable, EventHandler<Action
                 this.third.start();
                 this.fourth.start();
                 this.fifth.start();
-                AudioClip clip = new AudioClip(this.getClass().getResource("vuvuzela.mp3").toString());
-                clip.play();
+
+                AudioClip clip2 = new AudioClip(this.getClass().getResource("vuvuzela.mp3").toString());
+                clip2.play();
             }
 
         }
